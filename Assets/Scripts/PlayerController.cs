@@ -23,6 +23,13 @@ public class PlayerController : MonoBehaviour
     private float minSwipeDistancePixels;
     private Vector2 touchStart;
 
+    public enum MobileHorizMovement
+    {
+        Accelerometer,
+        ScreenTouch
+    }
+    public MobileHorizMovement horizMovement = MobileHorizMovement.Accelerometer;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
