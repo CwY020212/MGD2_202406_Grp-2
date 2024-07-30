@@ -471,8 +471,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dodgeSpeed: 5
   rollSpeed: 5
-  swipeMove: 2
+  swipeMove: 4
   minSwipeDistance: 0.25
+  horizMovement: 0
 --- !u!1 &1965245288
 GameObject:
   m_ObjectHideFlags: 0
