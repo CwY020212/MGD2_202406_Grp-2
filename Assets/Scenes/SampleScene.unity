@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 022e71752654d3f4fa0cbe71b312ad20, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -385,7 +385,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 65aa749fc42cbeb469e0740e61930ce0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -426,7 +426,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -438,7 +438,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964855281}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 2
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -466,13 +466,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 964855281}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a0112015bf85274c80c5040aa41825f, type: 3}
+  m_Script: {fileID: 11500000, guid: cb00dc1dae0a60541bb603e35fe39ab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dodgeSpeed: 5
-  rollSpeed: 5
+  dodgeSpeed: 3
+  rollSpeed: 1
   swipeMove: 2
   minSwipeDistance: 0.25
+  JumpForce: 3
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  isGrounded: 0
   horizMovement: 0
 --- !u!1 &1744140297
 GameObject:
@@ -503,7 +508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7589d6ff19fb934c93183e6a7cd1f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 145023350170169508, guid: 1e7130c8db256a24f8892e014a75683d, type: 3}
+  tile: {fileID: 145023350170169508, guid: 06bd9eda7b85db444a876d5b5a251742, type: 3}
   obstacle: {fileID: 8711577549338777249, guid: 6f7ad88794640914a90810b24d6e1eca, type: 3}
   startPoint: {x: 0, y: 0, z: -5}
   initSpawnNum: 10

@@ -13,7 +13,7 @@ public class TileEndBehaviour : MonoBehaviour
     private void OnTriggerEnter(Collider col)
     {
         // First check if we collided with the player
-        if (col.gameObject.GetComponent<PlayerController>())
+        if (col.gameObject.GetComponent<PlayerBehavior>())
         {
             // If we did, spawn a new tile
             GameObject.FindObjectOfType<GameController>

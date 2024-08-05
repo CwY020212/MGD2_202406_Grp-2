@@ -10,7 +10,7 @@ public class ObstacleBehaviour : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // First check if we collided with the player
-        if (collision.gameObject.GetComponent<PlayerController>())
+        if (collision.gameObject.GetComponent<PlayerBehavior>())
         {
             // Destroy the player
             Destroy(collision.gameObject);
