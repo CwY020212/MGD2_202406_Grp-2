@@ -469,15 +469,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb00dc1dae0a60541bb603e35fe39ab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dodgeSpeed: 3
-  rollSpeed: 1
-  swipeMove: 2
+  dodgeSpeed: 5
+  rollSpeed: 5
+  swipeMove: 5
   minSwipeDistance: 0.25
-  JumpForce: 3
-  groundLayer:
+  JumpForce: 5
+  isGrounded: 0
+  whatIsGround:
     serializedVersion: 2
     m_Bits: 8
-  isGrounded: 0
   horizMovement: 0
 --- !u!1 &1744140297
 GameObject:

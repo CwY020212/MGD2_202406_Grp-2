@@ -24,9 +24,15 @@ public class PlayerBehavior : MonoBehaviour
     private Vector2 touchStart;
 
     [SerializeField] float JumpForce = 3;
-    [SerializeField] LayerMask groundLayer; // Add a layer mask for the ground
+    
 
     [SerializeField]private bool isGrounded;
+
+    [Tooltip("What is considered to be Ground.")]
+    [SerializeField] private LayerMask whatIsGround;
+
+    // Sphere collider reference for the player.
+    private SphereCollider col;
 
     public enum MobileHorizMovement
     {
@@ -39,13 +45,12 @@ public class PlayerBehavior : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
+        col = GetComponent<SphereCollider>();
     }
 
     private void FixedUpdate()
     {
         var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
-
-        CheckGroundStatus(); // Check if the player is grounded
 
 #if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
         if (Input.GetMouseButton(0))
@@ -68,12 +73,15 @@ public class PlayerBehavior : MonoBehaviour
 #endif
         rb.AddForce(horizontalSpeed, 0, rollSpeed);
 
-        // Keep the ball upright
-        rb.rotation = Quaternion.Euler(0, rb.rotation.eulerAngles.y, 0);
+       
     }
 
     private void Update()
     {
+
+        // Check Properties
+        // Check if the player is on the ground.
+        isGrounded = Physics.CheckSphere(transform.position, col.radius + 0.05f, whatIsGround);
 #if UNITY_IOS || UNITY_ANDROID
         if (Input.touchCount > 0)
         {
@@ -83,22 +91,15 @@ public class PlayerBehavior : MonoBehaviour
             // Detect tap for jump
             if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && isGrounded)
             {
-                Jump();
+                Jump(touch);
             }
         }
 #else
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            Jump();
-        }
+
 #endif
     }
 
-    private void Jump()
-    {
-        rb.AddForce(Vector3.up * JumpForce, ForceMode.Impulse);
-        isGrounded = false; // Prevent multiple jumps by setting isGrounded to false immediately after jumping
-    }
+    
 
     private float CalculateMovement(Vector3 pixelPos)
     {
@@ -146,25 +147,17 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
-    private void CheckGroundStatus()
+    private void Jump(Touch touch)
     {
-        // Cast a ray downwards to check if the player is grounded
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.5f, groundLayer);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
+        // Check if the player touches the specific area at the bottom of the screen.
+        if (Input.GetKeyDown(KeyCode.Space)||touch.phase == TouchPhase.Began && isGrounded)
         {
-            isGrounded = true;
-        }
-    }
+            // Convert the screen position to viewport position.
+            Vector2 touchPos = Camera.main.ScreenToViewportPoint(touch.position);
 
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
+
+            // Jump
+            rb.AddForce(0, transform.position.y * JumpForce, 0, ForceMode.Impulse);
         }
     }
 }
