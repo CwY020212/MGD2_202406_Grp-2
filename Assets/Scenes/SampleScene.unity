@@ -509,10 +509,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tile: {fileID: 145023350170169508, guid: 06bd9eda7b85db444a876d5b5a251742, type: 3}
-  obstacle: {fileID: 8711577549338777249, guid: 6f7ad88794640914a90810b24d6e1eca, type: 3}
+  obstacle:
+  - {fileID: 3455227468251667027, guid: 7b10f26a1b3956244b82a13e6e41ad3e, type: 3}
   startPoint: {x: 0, y: 0, z: -5}
   initSpawnNum: 10
   initNoObstacles: 4
+  obstacleCount: 0
 --- !u!4 &1744140299
 Transform:
   m_ObjectHideFlags: 0

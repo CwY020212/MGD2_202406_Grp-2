@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour
     public Transform tile;
 
     [Tooltip("A reference to the obstacle we want to spawn")]
-    public Transform obstacle;
+    public List<Transform> obstacle;
 
     [Tooltip("Where the first tile should be placed at")]
     public Vector3 startPoint = new Vector3(0, 0, -5);
@@ -23,6 +23,9 @@ public class GameController : MonoBehaviour
 
     [Tooltip("How many tiles to spawn initially with no obstacles")]
     public int initNoObstacles = 4;
+
+    [Tooltip("Number of obstacles there are currently")]
+    public int obstacleCount;
 
     /// Where the next tile should be spawned at.
     private Vector3 nextTileLocation;
@@ -35,6 +38,9 @@ public class GameController : MonoBehaviour
         // Set our starting point
         nextTileLocation = startPoint;
         nextTileRotation = Quaternion.identity;
+
+        obstacleCount = 0; // Initialize obstacle counter
+        
         for (int i = 0; i < initSpawnNum; ++i)
         {
             SpawnNextTile(i >= initNoObstacles);
@@ -83,10 +89,17 @@ public class GameController : MonoBehaviour
             var spawnPos = spawnPoint.transform.position;
 
             // Create our obstacle
-            var newObstacle = Instantiate(obstacle, spawnPos, Quaternion.identity);
+            var newObstacle = Instantiate(obstacle[Random.Range(0, obstacle.Count)], spawnPos, Quaternion.identity);
 
             // Have it parented to the tile
             newObstacle.SetParent(spawnPoint.transform);
+
+            obstacleCount++;
+
+            if (obstacleCount == initSpawnNum)
+            {
+                obstacleCount = 0;
+            }
         }
     }
 }
