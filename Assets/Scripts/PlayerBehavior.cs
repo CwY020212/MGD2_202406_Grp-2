@@ -1,163 +1,175 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PlayerBehavior : MonoBehaviour
 {
     private Rigidbody rb;
 
+    [Header("Movement")]
     [Tooltip("How fast the ball moves left/right")]
     public float dodgeSpeed = 5;
 
     [Tooltip("How fast the ball moves forwards automatically")]
-    [Range(0, 10)]
     public float rollSpeed = 5;
-
-    [Header("Swipe Properties")]
-    [Tooltip("How far will the player move upon swiping")]
-    public float swipeMove = 2f;
-
-    [Tooltip("How far must the player swipe before we will execute the action (in inches)")]
-    public float minSwipeDistance = 0.25f;
-
-    private float minSwipeDistancePixels;
-    private Vector2 touchStart;
-
-    [SerializeField] float JumpForce = 3;
-    
-
-    [SerializeField]private bool isGrounded;
-
-    [Tooltip("What is considered to be Ground.")]
-    [SerializeField] private LayerMask whatIsGround;
-
-    // Sphere collider reference for the player.
-    private SphereCollider col;
 
     public enum MobileHorizMovement
     {
         Accelerometer,
         ScreenTouch
     }
+
     public MobileHorizMovement horizMovement = MobileHorizMovement.Accelerometer;
 
+    [Header("Swipe Properties")]
+    [Tooltip("How far will the player move upon swiping")]
+    public float swipeMove = 2f;
+
+    [Tooltip("How far must the player swipe before we will execute the action(in inches)")]
+    public float minSwipeDistance = 0.25f;
+
+    // Used to hold the value that converts minSwipeDistance to pixels
+    private float minSwipeDistancePixels;
+
+    // Stores the starting point of mobile touch events
+    private Vector2 touchStart;
+
+    [Tooltip("Height player can jump")]
+    public float jumpForce = 10f;
+
+    [Tooltip("Distance player should stop jumping")]
+    public float jumpDistance;
+
+    // Sphere collider reference for the player.
+    private SphereCollider col;
+
+    [Tooltip("What is considered to be Ground.")]
+    [SerializeField] private LayerMask whatIsGround;
+
+    [Tooltip("What is considered to be an Obstacle.")]
+    [SerializeField] private LayerMask whatIsObstacle;
+
+    // Boolean that check whether player is on the ground.
+    private bool isGrounded;
+
+    // Boolean that check whether there is an obstacle in front of the player.
+    private bool hasObstacle;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
+
         col = GetComponent<SphereCollider>();
-    }
 
-    private void FixedUpdate()
-    {
-        var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
-
-#if UNITY_STANDALONE || UNITY_WEBPLAYER || UNITY_EDITOR
-        if (Input.GetMouseButton(0))
-        {
-            horizontalSpeed = CalculateMovement(Input.mousePosition);
-        }
-#elif UNITY_IOS || UNITY_ANDROID
-        if (horizMovement == MobileHorizMovement.Accelerometer)
-        {
-            horizontalSpeed = Input.acceleration.x * dodgeSpeed;
-        }
-        if (Input.touchCount > 0)
-        {
-            if (horizMovement == MobileHorizMovement.ScreenTouch)
-            {
-                Touch touch = Input.touches[0];
-                horizontalSpeed = CalculateMovement(touch.position);
-            }
-        }
-#endif
-        rb.AddForce(horizontalSpeed, 0, rollSpeed);
-
-       
+        minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
     }
 
     private void Update()
     {
-
         // Check Properties
         // Check if the player is on the ground.
         isGrounded = Physics.CheckSphere(transform.position, col.radius + 0.05f, whatIsGround);
-#if UNITY_IOS || UNITY_ANDROID
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.touches[0];
-            SwipeTeleport(touch);
 
-            // Detect tap for jump
-            if (touch.phase == TouchPhase.Ended && touch.tapCount == 1 && isGrounded)
+        // Check if there is an obstacle in front of the player.
+        hasObstacle = Physics.Raycast(transform.position, Vector3.forward, jumpDistance, whatIsObstacle, QueryTriggerInteraction.Ignore);
+
+       
+        // Check if we are running on a mobile device
+#if UNITY_IOS || UNITY_ANDROID
+            // Check if Input has registered more than zero touches
+            if (Input.touchCount > 0)
             {
+              // Store the first touch detected
+                Touch touch = Input.touches[0];
+
+                SwipeTeleport(touch);
                 Jump(touch);
             }
-        }
-#else
-
 #endif
     }
 
+    private void FixedUpdate()
+    {
+        // Check if we're moving to the side
+        var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
+
     
 
-    private float CalculateMovement(Vector3 pixelPos)
-    {
-        var worldPos = Camera.main.ScreenToViewportPoint(pixelPos);
-        float xMove = 0;
-        if (worldPos.x < 0.5f)
+        // Do not always addforce
+        if (rb.velocity.magnitude < rollSpeed)
         {
-            xMove = -1;
+            rb.AddForce(0, 0, rollSpeed);
         }
-        else
-        {
-            xMove = 1;
-        }
-        return xMove * dodgeSpeed;
+
+        rb.AddForce(horizontalSpeed, 0, 0);
     }
 
+   
+    // Will teleport the player if swiped to the left or right
     private void SwipeTeleport(Touch touch)
     {
+        // Check if the touch just strated
         if (touch.phase == TouchPhase.Began)
         {
+            // If so, set touchStart
             touchStart = touch.position;
         }
+        // If the touch has ended
         else if (touch.phase == TouchPhase.Ended)
         {
+            // Get the position the touch ended at
             Vector2 touchEnd = touch.position;
+
+            // Calculate the difference betweeen the beginning and end of the touch on the x axis
             float x = touchEnd.x - touchStart.x;
+
+            // If we are not moving far enough, don't do the teleport
             if (Mathf.Abs(x) < minSwipeDistancePixels)
             {
                 return;
             }
+
             Vector3 moveDirection;
+
+            // If moved negatively in the x axis, move left
             if (x < 0)
             {
                 moveDirection = Vector3.left;
             }
             else
             {
+                // Otherwise we're on the right
                 moveDirection = Vector3.right;
             }
+
             RaycastHit hit;
+
+            // Only move if we wouldn't hit something
             if (!rb.SweepTest(moveDirection, out hit, swipeMove))
             {
+                // Move the player
                 rb.MovePosition(rb.position + (moveDirection * swipeMove));
             }
         }
     }
 
+    // Player will jump when we touch the specific area at the bottom of the screen
     private void Jump(Touch touch)
     {
         // Check if the player touches the specific area at the bottom of the screen.
-        if (Input.GetKeyDown(KeyCode.Space)||touch.phase == TouchPhase.Began && isGrounded)
+        if (touch.phase == TouchPhase.Began && isGrounded && !hasObstacle)
         {
             // Convert the screen position to viewport position.
             Vector2 touchPos = Camera.main.ScreenToViewportPoint(touch.position);
 
-
-            // Jump
-            rb.AddForce(0, transform.position.y * JumpForce, 0, ForceMode.Impulse);
+            // Define the specific area at the bottom of the screen (example: bottom 25% of the screen)
+            if (touchPos.y < 0.25f)
+            {
+                // Apply the jump force
+                rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
         }
     }
+
+   
 }
