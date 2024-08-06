@@ -7,6 +7,8 @@ public class PlayerBehavior : MonoBehaviour
 {
     private Rigidbody rb;
 
+    private float radius = 0.5f;
+
     [Header("Movement")]
     [Tooltip("How fast the ball moves left/right")]
     public float dodgeSpeed = 5;
@@ -171,5 +173,22 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
-   
+    public void PickUp()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
+        foreach (Collider hitCollider in hitColliders)
+        {
+            Vector3 HitPosition = hitCollider.transform.position;
+            HitPosition.y = hitCollider.transform.position.y;
+
+            Vector3 Direction = HitPosition - transform.position;
+            if (Vector3.Dot(transform.forward, Direction.normalized) > 0.5f)
+            {
+                hitCollider.SendMessage("Operate",
+               SendMessageOptions.DontRequireReceiver);
+            }
+        }
+    }
+
+
 }
