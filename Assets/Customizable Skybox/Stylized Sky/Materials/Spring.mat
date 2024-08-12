@@ -9,11 +9,11 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Spring
   m_Shader: {fileID: 4800000, guid: eb3c6fb598ded4c71b8968e1c40a3b4d, type: 3}
-  m_Parent: {fileID: 0}
+  m_Parent: {fileID: 2100000, guid: 2441c79940171dc43b33badf9fe97828, type: 2}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 0
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -28,17 +28,12 @@ Material:
     - _HorizonLineContribution: 0.19
     - _HorizonLineExponent: 1
     - _SkyGradientExponent: 4
-    - _SunDiscContribution: 1
     - _SunDiscExponent: 6000
     - _SunDiscMultiplier: 2
-    - _SunHaloContribution: 0.5
     - _SunHaloExponent: 50
-    - _Title: 0
-    - __dirty: 0
     m_Colors:
     - _HorizonLineColor: {r: 1, g: 1, b: 1, a: 1}
     - _SkyGradientBottom: {r: 0.84276724, g: 0.62279963, b: 0.62279963, a: 1}
     - _SkyGradientTop: {r: 0.6392157, g: 0.68234974, b: 0.7411765, a: 1}
-    - _SunDiscColor: {r: 1, g: 1, b: 1, a: 1}
     - _SunHaloColor: {r: 1, g: 0.5841785, b: 0.2647059, a: 1}
   m_BuildTextureStacks: []
