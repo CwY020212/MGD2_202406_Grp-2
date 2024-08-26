@@ -22,6 +22,26 @@ public class PlayerBehavior : MonoBehaviour
         ScreenTouch
     }
 
+    public enum PowerUpType
+    {
+        SpeedBoost,
+        ShieldBoost,
+        Magnet
+    }
+
+    [Header("Power-Up Properties")]
+    public float speedBoostMultiplier = 2f;
+    public float shieldDuration = 5f;
+    public float magnetDuration = 5f;
+
+    private bool hasSpeedBoost = false;
+    private bool hasShield = false;
+    private bool hasMagnet = false;
+
+    private float speedBoostEndTime;
+    private float shieldEndTime;
+    private float magnetEndTime;
+
     public MobileHorizMovement horizMovement = MobileHorizMovement.Accelerometer;
 
     [Header("Swipe Properties")]
@@ -95,15 +115,25 @@ public class PlayerBehavior : MonoBehaviour
         // Check if we're moving to the side
         var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
 
-    
+        // Apply speed boost if active
+        float currentRollSpeed = hasSpeedBoost ? rollSpeed * speedBoostMultiplier : rollSpeed;
 
-        // Do not always addforce
-        if (rb.velocity.magnitude < rollSpeed)
+        // Do not always add force
+        if (rb.velocity.magnitude < currentRollSpeed)
         {
-            rb.AddForce(0, 0, rollSpeed);
+            rb.AddForce(0, 0, currentRollSpeed);
         }
 
         rb.AddForce(horizontalSpeed, 0, 0);
+
+        // Check if power-ups have expired
+        CheckPowerUps();
+
+        // Attract collectibles if magnet is active
+        if (hasMagnet)
+        {
+            AttractCollectibles();
+        }
     }
 
    
@@ -184,11 +214,85 @@ public class PlayerBehavior : MonoBehaviour
             Vector3 Direction = HitPosition - transform.position;
             if (Vector3.Dot(transform.forward, Direction.normalized) > 0.5f)
             {
-                hitCollider.SendMessage("Operate",
-               SendMessageOptions.DontRequireReceiver);
+                PowerUpType powerUp = hitCollider.GetComponent<PowerUp>().type;
+                ApplyPowerUp(powerUp);
+                hitCollider.SendMessage("Operate", SendMessageOptions.DontRequireReceiver);
             }
         }
     }
 
+    private void ApplyPowerUp(PowerUpType powerUp)
+    {
+        switch (powerUp)
+        {
+            case PowerUpType.SpeedBoost:
+                ActivateSpeedBoost();
+                break;
+            case PowerUpType.ShieldBoost:
+                ActivateShieldBoost();
+                break;
+            case PowerUpType.Magnet:
+                ActivateMagnet();
+                break;
+        }
+    }
 
+    private void ActivateSpeedBoost()
+    {
+        hasSpeedBoost = true;
+        speedBoostEndTime = Time.time + 5f; // Duration of the speed boost
+    }
+
+    private void ActivateShieldBoost()
+    {
+        hasShield = true;
+        shieldEndTime = Time.time + shieldDuration;
+    }
+
+    private void ActivateMagnet()
+    {
+        hasMagnet = true;
+        magnetEndTime = Time.time + magnetDuration;
+    }
+
+    private void CheckPowerUps()
+    {
+        if (hasSpeedBoost && Time.time > speedBoostEndTime)
+        {
+            hasSpeedBoost = false;
+        }
+
+        if (hasShield && Time.time > shieldEndTime)
+        {
+            hasShield = false;
+        }
+
+        if (hasMagnet && Time.time > magnetEndTime)
+        {
+            hasMagnet = false;
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (hasShield && collision.gameObject.CompareTag("Obstacle"))
+        {
+            // Prevent damage or interaction with the obstacle
+            // Example: Destroy obstacle or ignore collision
+            Destroy(collision.gameObject);
+        }
+    }
+
+    private void AttractCollectibles()
+    {
+        // Find all collectible objects within a certain radius
+        Collider[] collectibles = Physics.OverlapSphere(transform.position, 10f, LayerMask.GetMask("Collectible"));
+
+        foreach (Collider collectible in collectibles)
+        {
+            // Move collectible towards the player
+            Vector3 direction = (transform.position - collectible.transform.position).normalized;
+            collectible.transform.position += direction * Time.deltaTime * 5f; // Adjust speed as needed
+        }
+    }
 }
