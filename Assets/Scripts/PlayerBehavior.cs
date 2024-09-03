@@ -77,6 +77,25 @@ public class PlayerBehavior : MonoBehaviour
 
     // Boolean that check whether there is an obstacle in front of the player.
     private bool hasObstacle;
+
+    [Header("Object References")]
+    public TMP_Text scoreText; // Changed to TMP_Text
+    private float score = 0f;
+
+    public float Score
+    {
+        get { return score; }
+        set
+        {
+            score = value;
+            if (scoreText == null)
+            {
+                Debug.LogError("Score Text is not set. Please assign it in the Inspector.");
+                return;
+            }
+            scoreText.text = $"{score:0}";
+        }
+    }
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -84,6 +103,8 @@ public class PlayerBehavior : MonoBehaviour
         col = GetComponent<SphereCollider>();
 
         minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
+
+        Score = 0;
     }
 
     private void Update()
@@ -112,6 +133,11 @@ public class PlayerBehavior : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (PauseSceneController.paused)
+        {
+            return;
+        }
+
         // Check if we're moving to the side
         var horizontalSpeed = Input.GetAxis("Horizontal") * dodgeSpeed;
 
