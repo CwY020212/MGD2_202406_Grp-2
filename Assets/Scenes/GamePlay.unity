@@ -1042,13 +1042,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7589d6ff19fb934c93183e6a7cd1f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 145023350170169508, guid: 06bd9eda7b85db444a876d5b5a251742, type: 3}
+  tile:
+  - {fileID: 145023350170169508, guid: 06bd9eda7b85db444a876d5b5a251742, type: 3}
+  - {fileID: 145023350170169508, guid: 26824847f2d94ba41a83151ffc3046a4, type: 3}
+  - {fileID: 145023350170169508, guid: 733d77c6948d0444d986079f35512508, type: 3}
+  - {fileID: 145023350170169508, guid: acb24b6fd8d401441acb509de6a802e8, type: 3}
   obstacle:
   - {fileID: 3455227468251667027, guid: 7b10f26a1b3956244b82a13e6e41ad3e, type: 3}
   startPoint: {x: 0, y: 0, z: -5}
   initSpawnNum: 10
   initNoObstacles: 4
   obstacleCount: 0
+  switchDistance: 50
+  skyboxes:
+  - {fileID: 2100000, guid: 022e71752654d3f4fa0cbe71b312ad20, type: 2}
+  - {fileID: 2100000, guid: 9aa8ed67591432941bb76f12eb23ff91, type: 2}
+  - {fileID: 2100000, guid: 2441c79940171dc43b33badf9fe97828, type: 2}
+  - {fileID: 2100000, guid: 52fcefd712182d743a781fde12426775, type: 2}
 --- !u!4 &1744140299
 Transform:
   m_ObjectHideFlags: 0

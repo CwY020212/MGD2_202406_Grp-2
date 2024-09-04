@@ -16,8 +16,8 @@ public class TileEndBehaviour : MonoBehaviour
         if (col.gameObject.GetComponent<PlayerBehavior>())
         {
             // If we did, spawn a new tile
-            GameObject.FindObjectOfType<GameController>
-            ().SpawnNextTile();
+            GameObject.FindObjectOfType<GameController>().SpawnNextTile();
+
             // And destroy this entire tile after a short delay
             Destroy(transform.parent.gameObject, destroyTime);
         }
