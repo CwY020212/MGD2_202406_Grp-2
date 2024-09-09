@@ -9,15 +9,16 @@ public class ObstacleBehaviour : MonoBehaviour
     public float waitTime = 2.0f;
     private void OnCollisionEnter(Collision collision)
     {
-        // First check if we collided with the player
-        if (collision.gameObject.GetComponent<PlayerBehavior>())
+        PlayerBehavior player = collision.gameObject.GetComponent<PlayerBehavior>();
+        if (player != null)
         {
-            // Destroy the player
-            Destroy(collision.gameObject);
+            player.ShieldPower();
 
-            // Call the function ResetGame after waitTime
-            // has passed
-            Invoke("ResetGame", waitTime);
+            // If the player is not destroyed, we don't need to restart the game
+            if (!player.hasShield)
+            {
+                Invoke("ResetGame", waitTime);
+            }
         }
     }
 
@@ -25,6 +26,19 @@ public class ObstacleBehaviour : MonoBehaviour
     private void ResetGame()
     {
         // Restarts the current level
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+
+        //Bring up restart menu
+        var go = GetGameOverMenu();
+        go.SetActive(true);
+
     }
+
+    GameObject GetGameOverMenu()
+    {
+        var canvas = GameObject.Find("Canvas").transform;
+        return canvas.Find("Game Over").gameObject;
+    }
+
+   
 }

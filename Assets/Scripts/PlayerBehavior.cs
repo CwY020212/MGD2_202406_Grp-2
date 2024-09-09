@@ -35,7 +35,7 @@ public class PlayerBehavior : MonoBehaviour
     public float magnetDuration = 5f;
 
     private bool hasSpeedBoost = false;
-    private bool hasShield = false;
+    public bool hasShield = false;
     private bool hasMagnet = false;
 
     private float speedBoostEndTime;
@@ -129,6 +129,15 @@ public class PlayerBehavior : MonoBehaviour
                 Jump(touch);
             }
 #endif
+
+        // Check if power-ups have expired
+        CheckPowerUps();
+
+        // Attract collectibles if magnet is active
+        if (hasMagnet)
+        {
+            AttractCollectibles();
+        }
     }
 
     private void FixedUpdate()
@@ -152,14 +161,7 @@ public class PlayerBehavior : MonoBehaviour
 
         rb.AddForce(horizontalSpeed, 0, 0);
 
-        // Check if power-ups have expired
-        CheckPowerUps();
-
-        // Attract collectibles if magnet is active
-        if (hasMagnet)
-        {
-            AttractCollectibles();
-        }
+       
     }
 
    
@@ -247,7 +249,7 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
-    private void ApplyPowerUp(PowerUpType powerUp)
+    public void ApplyPowerUp(PowerUpType powerUp)
     {
         switch (powerUp)
         {
@@ -299,20 +301,26 @@ public class PlayerBehavior : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void ShieldPower()
     {
-        if (hasShield && collision.gameObject.CompareTag("Obstacle"))
+        if (hasShield)
         {
-            // Prevent damage or interaction with the obstacle
-            // Example: Destroy obstacle or ignore collision
-            Destroy(collision.gameObject);
+            // Prevent the player from dying or taking damage
+            Debug.Log("Shield active: Player is safe!");
+            //hasShield = false;
+
+        }
+        else
+        {
+            // Handle the player dying logic
+            Destroy(gameObject);
         }
     }
 
     private void AttractCollectibles()
     {
         // Find all collectible objects within a certain radius
-        Collider[] collectibles = Physics.OverlapSphere(transform.position, 10f, LayerMask.GetMask("Collectible"));
+        Collider[] collectibles = Physics.OverlapSphere(transform.position, 10f, LayerMask.GetMask("Collectibles"));
 
         foreach (Collider collectible in collectibles)
         {
@@ -321,4 +329,6 @@ public class PlayerBehavior : MonoBehaviour
             collectible.transform.position += direction * Time.deltaTime * 5f; // Adjust speed as needed
         }
     }
+
+   
 }

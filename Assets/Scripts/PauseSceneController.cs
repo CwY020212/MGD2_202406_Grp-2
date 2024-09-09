@@ -58,7 +58,7 @@ public class PauseSceneController : MainMenuController
     {
         // Create contents of the tweet
         string tweet = "I got " + string.Format("{0:0}", player.Score)
-        + " points in Endless Roller! Can you do better?";
+        + " points in Seasons Of Wonder! Can you do better?";
         // Create the entire message
         string message = tweet + "\n" + appStoreLink;
         //Ensures string is URL friendly
