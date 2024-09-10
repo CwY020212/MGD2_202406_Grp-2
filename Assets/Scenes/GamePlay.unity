@@ -442,11 +442,10 @@ MonoBehaviour:
   - {fileID: 145023350170169508, guid: 26824847f2d94ba41a83151ffc3046a4, type: 3}
   - {fileID: 145023350170169508, guid: 733d77c6948d0444d986079f35512508, type: 3}
   - {fileID: 145023350170169508, guid: acb24b6fd8d401441acb509de6a802e8, type: 3}
-  obstacle:
-  - {fileID: 3455227468251667027, guid: 7b10f26a1b3956244b82a13e6e41ad3e, type: 3}
+  obstacle: []
   startPoint: {x: 0, y: 0, z: -5}
   initSpawnNum: 10
-  initNoObstacles: 4
+  initNoObstacles: 3
   obstacleCount: 0
   switchDistance: 50
   skyboxes:
@@ -631,6 +630,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1697301063698301954, guid: 403548471608e60448d7a38fe28ddf8c, type: 3}
+      propertyPath: jumpForce
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1697301063698301954, guid: 403548471608e60448d7a38fe28ddf8c, type: 3}
       propertyPath: scoreText
       value: 
       objectReference: {fileID: 6264595774371164791}
@@ -676,7 +679,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4947183275674012410, guid: 403548471608e60448d7a38fe28ddf8c, type: 3}
       propertyPath: m_IsTrigger
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
