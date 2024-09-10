@@ -455,6 +455,13 @@ MonoBehaviour:
   - obstacles:
     - {fileID: 7754669633669720243, guid: 4e191c4e9d64c634a84e02469c77e3b9, type: 3}
     - {fileID: 578735896986430917, guid: 1290dcf81a200074aa92a3942b1227e3, type: 3}
+  collectiblePrefab: {fileID: 4729567157529672892, guid: cc48f7038be77974585b21969d994a10, type: 3}
+  powerups:
+  - {fileID: 8953539378491120653, guid: c786b7cb988ddd54da103a4221245899, type: 3}
+  - {fileID: 974479830172021870, guid: 0675223c07b95f848bac68f8ecbea289, type: 3}
+  - {fileID: 405169697638918986, guid: bc12e44fd29d25540912a196bd663c21, type: 3}
+  powerupCD: 10
+  powerupTimer: 0
   startPoint: {x: 0, y: 0, z: -5}
   initSpawnNum: 10
   initNoObstacles: 3
@@ -464,9 +471,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 9aa8ed67591432941bb76f12eb23ff91, type: 2}
   - {fileID: 2100000, guid: 2441c79940171dc43b33badf9fe97828, type: 2}
   - {fileID: 2100000, guid: 52fcefd712182d743a781fde12426775, type: 2}
-  summerDistance: 20
-  autumnDistance: 40
-  winterDistance: 60
+  summerDistance: 100
+  autumnDistance: 300
+  winterDistance: 500
 --- !u!4 &1744140299
 Transform:
   m_ObjectHideFlags: 0

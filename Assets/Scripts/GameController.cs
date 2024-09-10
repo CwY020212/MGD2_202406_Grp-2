@@ -22,6 +22,16 @@ public class GameController : MonoBehaviour
     [Tooltip("A reference to the obstacle we want to spawn")]
     public ObstacleGroup[] obstacleGroups;
 
+    [Tooltip("Reference to point collectable")]
+    public Transform collectiblePrefab;
+
+    [Tooltip("Reference to powerups")]
+    public Transform[] powerups;
+
+    [Tooltip("Cooldown time for powerup spawning")]
+    public float powerupCD = 3f;
+    public float powerupTimer;
+
     [Tooltip("Where the first tile should be placed at")]
     public Vector3 startPoint = new Vector3(0, 0, -5);
 
@@ -62,6 +72,8 @@ public class GameController : MonoBehaviour
         score = FindObjectOfType<PlayerBehavior>();
         currentTile = tile[currentTileIndex];
 
+        powerupTimer = 0;
+
         // Set our starting point
         nextTileLocation = startPoint;
         nextTileRotation = Quaternion.identity;
@@ -97,6 +109,8 @@ public class GameController : MonoBehaviour
             winter = true;
             Debug.Log("Winter");
         }
+
+        powerupTimer -= Time.deltaTime;
     }
 
     /// Will spawn a tile at a certain location and setup the next position
@@ -163,10 +177,13 @@ public class GameController : MonoBehaviour
         }
 
         // Make sure there is at least one
-        if (obstacleSpawnPoints.Count > 0)
+        if (obstacleSpawnPoints.Count > 1)
         {
             // Get a random object from the ones we have
             var spawnPoint = obstacleSpawnPoints[UnityEngine.Random.Range(0, obstacleSpawnPoints.Count)];
+
+            // Remove the obstacle spawn point from the list so it can't be used for the collectible
+            obstacleSpawnPoints.Remove(spawnPoint);
 
             // Store its position for us to use
             var spawnPos = spawnPoint.transform.position;
@@ -177,12 +194,61 @@ public class GameController : MonoBehaviour
             // Have it parented to the tile
             newObstacle.SetParent(spawnPoint.transform);
 
+            // Spawn a collectable at a different spawn point
+            SpawnCollectible(newTile, obstacleSpawnPoints);
+
+            // If there is still one remaining spawn point, try to spawn a powerup
+            if (obstacleSpawnPoints.Count == 1 && powerupTimer <= 0)
+            {
+                SpawnPowerup(obstacleSpawnPoints[0]);
+            }
+
             obstacleCount++;
 
             if (obstacleCount == initSpawnNum)
             {
                 obstacleCount = 0;
             }
+        }
+    }
+
+    private void SpawnCollectible(Transform newTile, List<GameObject> remainingSpawnPoints)
+    {
+        // Check if there are remaining spawn points to place the collectible
+        if (remainingSpawnPoints.Count > 0)
+        {
+            // Get a random spawn point for the collectible
+            var collectibleSpawnPoint = remainingSpawnPoints[UnityEngine.Random.Range(0, remainingSpawnPoints.Count)];
+
+            // Store the collectible's position
+            var collectiblePos = collectibleSpawnPoint.transform.position;
+
+            // Instantiate the collectible at the chosen position
+            var newCollectible = Instantiate(collectiblePrefab, collectiblePos, Quaternion.identity);
+
+            // Have it parented to the tile
+            newCollectible.SetParent(collectibleSpawnPoint.transform);
+
+            // Remove the collectible spawn point from the list
+            remainingSpawnPoints.Remove(collectibleSpawnPoint);
+        }
+    }
+
+    private void SpawnPowerup(GameObject spawnPoint)
+    {
+        // Choose a random powerup from the array
+        if (powerups.Length > 0 && UnityEngine.Random.value < 0.3f)  // 30% chance to spawn a powerup
+        {
+            var powerupPrefab = powerups[UnityEngine.Random.Range(0, powerups.Length)];
+            var powerupPos = spawnPoint.transform.position;
+
+            // Instantiate the powerup at the last remaining spawn point
+            var newPowerup = Instantiate(powerupPrefab, powerupPos, Quaternion.identity);
+
+            // Have it parented to the tile
+            newPowerup.SetParent(spawnPoint.transform);
+
+            powerupTimer = powerupCD;
         }
     }
 }
