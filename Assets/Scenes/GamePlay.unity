@@ -442,17 +442,31 @@ MonoBehaviour:
   - {fileID: 145023350170169508, guid: 26824847f2d94ba41a83151ffc3046a4, type: 3}
   - {fileID: 145023350170169508, guid: 733d77c6948d0444d986079f35512508, type: 3}
   - {fileID: 145023350170169508, guid: acb24b6fd8d401441acb509de6a802e8, type: 3}
-  obstacle: []
+  obstacleGroups:
+  - obstacles:
+    - {fileID: 6254483615323140854, guid: 1d0b12c98707eef44ab5b703e6921f23, type: 3}
+    - {fileID: 4957531892617385962, guid: f9bb86bad8171f74bbf36363c5d3f8e0, type: 3}
+  - obstacles:
+    - {fileID: 3866171558270110488, guid: 0ac7f480f3eed7b4abd1b5e67096de05, type: 3}
+    - {fileID: 9042416496203201995, guid: fab8771ececd9c843902f0080319efbe, type: 3}
+  - obstacles:
+    - {fileID: 7821642147493801482, guid: 575863983e442b74796648984b370982, type: 3}
+    - {fileID: 3083759998125930162, guid: 9c45c263588528b4ca755a51893186ea, type: 3}
+  - obstacles:
+    - {fileID: 7754669633669720243, guid: 4e191c4e9d64c634a84e02469c77e3b9, type: 3}
+    - {fileID: 578735896986430917, guid: 1290dcf81a200074aa92a3942b1227e3, type: 3}
   startPoint: {x: 0, y: 0, z: -5}
   initSpawnNum: 10
   initNoObstacles: 3
   obstacleCount: 0
-  switchDistance: 50
   skyboxes:
   - {fileID: 2100000, guid: 022e71752654d3f4fa0cbe71b312ad20, type: 2}
   - {fileID: 2100000, guid: 9aa8ed67591432941bb76f12eb23ff91, type: 2}
   - {fileID: 2100000, guid: 2441c79940171dc43b33badf9fe97828, type: 2}
   - {fileID: 2100000, guid: 52fcefd712182d743a781fde12426775, type: 2}
+  summerDistance: 20
+  autumnDistance: 40
+  winterDistance: 60
 --- !u!4 &1744140299
 Transform:
   m_ObjectHideFlags: 0

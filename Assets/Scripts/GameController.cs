@@ -1,7 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+
+[Serializable]
+public class ObstacleGroup
+{
+    [Tooltip("Obstacles for this tile")]
+    public Transform[] obstacles;
+}
 
 /// <summary>
 /// Controls the main gameplay
@@ -12,7 +20,7 @@ public class GameController : MonoBehaviour
     public Transform[] tile;
 
     [Tooltip("A reference to the obstacle we want to spawn")]
-    public List<Transform> obstacle;
+    public ObstacleGroup[] obstacleGroups;
 
     [Tooltip("Where the first tile should be placed at")]
     public Vector3 startPoint = new Vector3(0, 0, -5);
@@ -27,9 +35,6 @@ public class GameController : MonoBehaviour
     [Tooltip("Number of obstacles there are currently")]
     public int obstacleCount;
 
-    [Tooltip("Distance to switch tile")]
-    public float switchDistance = 50f;
-
     [Tooltip("Skybox materials to swtich between when tile changes")]
     public Material[] skyboxes;
 
@@ -42,12 +47,19 @@ public class GameController : MonoBehaviour
     private Transform currentTile;
     private int currentTileIndex = 0;
 
-    private Transform player;
-    private float distanceTravelled = 0f;
+    private PlayerBehavior score;
 
+    [Header("Distance at which tiles should change")]
+    public float summerDistance;
+    private bool summer = false;
+    public float autumnDistance;
+    private bool autumn = false;
+    public float winterDistance;
+    private bool winter = false;
+    
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+        score = FindObjectOfType<PlayerBehavior>();
         currentTile = tile[currentTileIndex];
 
         // Set our starting point
@@ -67,12 +79,23 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        distanceTravelled = Vector3.Distance(startPoint, player.position);
-
-        if (distanceTravelled >= switchDistance)
+        if(score.Score >= summerDistance && !summer)
         {
-            SwitchTile();
-            startPoint = player.position; // Reset start point for next switch
+            SwitchTile(1);
+            summer = true;
+            Debug.Log("Summer");
+        }
+        else if (score.Score >= autumnDistance && !autumn)
+        {
+            SwitchTile(2);
+            autumn = true;
+            Debug.Log("Autumn");
+        }
+        else if (score.Score >= winterDistance && !winter)
+        {
+            SwitchTile(3);
+            winter = true;
+            Debug.Log("Winter");
         }
     }
 
@@ -92,14 +115,35 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void SwitchTile()
+    private void SwitchTile(int tileIndex)
     {
-        currentTileIndex = (currentTileIndex + 1) % tile.Length;
-        currentTile = tile[currentTileIndex];
-
-        // Switch skybox when the tile switches
-        RenderSettings.skybox = skyboxes[currentTileIndex];
-        DynamicGI.UpdateEnvironment();  // Update the lighting environment to reflect the new skybox
+        switch (tileIndex)
+        {
+            case 1:
+                currentTileIndex = tileIndex;
+                currentTile = tile[currentTileIndex];
+                RenderSettings.skybox = skyboxes[currentTileIndex];     // Switch skybox when the tile 
+                DynamicGI.UpdateEnvironment();  // Update the lighting environment to reflect the new skybox
+                break;
+            case 2:
+                currentTileIndex = tileIndex;
+                currentTile = tile[currentTileIndex];
+                RenderSettings.skybox = skyboxes[currentTileIndex];     // Switch skybox when the tile 
+                DynamicGI.UpdateEnvironment();  // Update the lighting environment to reflect the new skybox
+                break;
+            case 3:
+                currentTileIndex = tileIndex;
+                currentTile = tile[currentTileIndex];
+                RenderSettings.skybox = skyboxes[currentTileIndex];     // Switch skybox when the tile 
+                DynamicGI.UpdateEnvironment();  // Update the lighting environment to reflect the new skybox
+                break;
+            default:
+                currentTileIndex = 0;
+                currentTile = tile[currentTileIndex];
+                RenderSettings.skybox = skyboxes[currentTileIndex];     // Switch skybox when the tile 
+                DynamicGI.UpdateEnvironment();  // Update the lighting environment to reflect the new skybox
+                break;
+        }
     }
 
     private void SpawnObstacle(Transform newTile)
@@ -122,13 +166,13 @@ public class GameController : MonoBehaviour
         if (obstacleSpawnPoints.Count > 0)
         {
             // Get a random object from the ones we have
-            var spawnPoint = obstacleSpawnPoints[Random.Range(0, obstacleSpawnPoints.Count)];
+            var spawnPoint = obstacleSpawnPoints[UnityEngine.Random.Range(0, obstacleSpawnPoints.Count)];
 
             // Store its position for us to use
             var spawnPos = spawnPoint.transform.position;
 
             // Create our obstacle
-            var newObstacle = Instantiate(obstacle[Random.Range(0, obstacle.Count)], spawnPos, Quaternion.identity);
+            var newObstacle = Instantiate(obstacleGroups[currentTileIndex].obstacles[UnityEngine.Random.Range(0, obstacleGroups[currentTileIndex].obstacles.Length)], spawnPos, Quaternion.identity);
 
             // Have it parented to the tile
             newObstacle.SetParent(spawnPoint.transform);
