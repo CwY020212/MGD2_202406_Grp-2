@@ -2,11 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class ObstacleBehaviour : MonoBehaviour
 {
     [Tooltip("How long to wait before restarting the game")]
     public float waitTime = 2.0f;
+
+    private PlayerBehavior plyrScore;
+    UIHandler highScore;
+
+    private void Start()
+    {
+        plyrScore = FindAnyObjectByType<PlayerBehavior>();
+        highScore = FindObjectOfType<UIHandler>();
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         PlayerBehavior player = collision.gameObject.GetComponent<PlayerBehavior>();
@@ -31,7 +42,8 @@ public class ObstacleBehaviour : MonoBehaviour
         //Bring up restart menu
         var go = GetGameOverMenu();
         go.SetActive(true);
-
+        SavePlayerScore();
+        highScore.DisplayHighScore();
     }
 
     GameObject GetGameOverMenu()
@@ -40,5 +52,8 @@ public class ObstacleBehaviour : MonoBehaviour
         return canvas.Find("Game Over").gameObject;
     }
 
-   
+    public void SavePlayerScore()
+    {
+        LeaderboardManager.Instance.SaveScore(plyrScore.Score);
+    }
 }

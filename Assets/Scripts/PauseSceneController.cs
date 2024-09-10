@@ -32,7 +32,6 @@ public class PauseSceneController : MainMenuController
     {
         // Must be reset in Start or else game will be paused upon
         // restart
-       
         SetPauseMenu(false);
     }
 

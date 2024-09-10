@@ -408,6 +408,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb00dc1dae0a60541bb603e35fe39ab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1586122358 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4438589712699705378, guid: dddf0f7bb0001ae498a95ff1283214ed, type: 3}
+  m_PrefabInstance: {fileID: 8384815848472620255}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1744140297
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,6 +500,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1757263830 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3462710090400732259, guid: dddf0f7bb0001ae498a95ff1283214ed, type: 3}
+  m_PrefabInstance: {fileID: 8384815848472620255}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1757263835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1757263830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ccc5f0e51dc50c4a8516328e8d448b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highScoreText: {fileID: 1586122358}
+--- !u!4 &941241140457244451
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5964516827712737622}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1739923423118586585 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8271107244460835056, guid: 5cf6af9264078784fba7c42ac109bb13, type: 3}
@@ -562,6 +606,23 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 99a78004152a4244799902ef2d0e7b2d, type: 3}
+--- !u!1 &5964516827712737622
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 941241140457244451}
+  - component: {fileID: 7687977469541487473}
+  m_Layer: 0
+  m_Name: Leaderboard Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1001 &6190671901653979994
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -638,6 +699,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7687977469541487473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5964516827712737622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db6bd99c05d49ba4fb673f4ee9997df5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highScoreText: {fileID: 1586122358}
 --- !u!1001 &8001203731815915628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -830,7 +904,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3462710090400732259, guid: dddf0f7bb0001ae498a95ff1283214ed, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1757263835}
   m_SourcePrefab: {fileID: 100100000, guid: dddf0f7bb0001ae498a95ff1283214ed, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
@@ -843,3 +920,4 @@ SceneRoots:
   - {fileID: 6190671901653979994}
   - {fileID: 8384815848472620255}
   - {fileID: 5242455752225673695}
+  - {fileID: 941241140457244451}

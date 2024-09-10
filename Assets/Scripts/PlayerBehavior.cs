@@ -80,7 +80,7 @@ public class PlayerBehavior : MonoBehaviour
 
     [Header("Object References")]
     public TMP_Text scoreText; // Changed to TMP_Text
-    private float score = 0f;
+    public float score = 0f;
 
     public float Score
     {
