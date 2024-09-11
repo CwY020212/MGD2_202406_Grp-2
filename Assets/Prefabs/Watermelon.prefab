@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3561632091344249614}
   - component: {fileID: 3952554239485620649}
   m_Layer: 7
-  m_Name: Collectibles
+  m_Name: Watermelon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 99f54ef2a26374840a80a6c5cbd429a3, type: 2}
+  - {fileID: 2100000, guid: 65aa749fc42cbeb469e0740e61930ce0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,5 +118,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cc2f2c98a83922449c7e86748e2f514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: Collectibles
-  scoreValue: 10
+  itemName: Watermelon
+  scoreValue: 300
