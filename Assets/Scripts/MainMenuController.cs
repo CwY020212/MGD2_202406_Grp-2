@@ -69,4 +69,9 @@ public class MainMenuController : MonoBehaviour
             leaderboardPanel.SetActive(false);
         }
     }
+
+    public void CloseGame()
+    {
+        Application.Quit();
+    }
 }
