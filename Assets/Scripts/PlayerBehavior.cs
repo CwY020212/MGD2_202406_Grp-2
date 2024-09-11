@@ -326,7 +326,7 @@ public class PlayerBehavior : MonoBehaviour
         {
             // Move collectible towards the player
             Vector3 direction = (transform.position - collectible.transform.position).normalized;
-            collectible.transform.position += direction * Time.deltaTime * 5f; // Adjust speed as needed
+            collectible.transform.position += direction * Time.deltaTime * 7f; // Adjust speed as needed
         }
     }
 

@@ -64,7 +64,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6400000, guid: 46d48d452147249dcadc3d1763fc2f39, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -114,4 +115,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: 014 Gift_Box
-  scoreValue: 10
+  scoreValue: 200

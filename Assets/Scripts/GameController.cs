@@ -25,6 +25,15 @@ public class GameController : MonoBehaviour
     [Tooltip("Reference to point collectable")]
     public Transform collectiblePrefab;
 
+    [Tooltip("Reference to rare collectables")]
+    public Transform[] rareCollectables;
+
+    [Tooltip("Chance to spawn a rare collectable")]
+    [Range(0f, 1f)]
+    public float rareCollectableChance = 0.1f;
+    public float rareCollectableCD = 10f;
+    public float rareCollectableTimer;
+
     [Tooltip("Reference to powerups")]
     public Transform[] powerups;
 
@@ -73,6 +82,7 @@ public class GameController : MonoBehaviour
         currentTile = tile[currentTileIndex];
 
         powerupTimer = 0;
+        rareCollectableTimer = 0;
 
         // Set our starting point
         nextTileLocation = startPoint;
@@ -87,6 +97,7 @@ public class GameController : MonoBehaviour
 
         // Set the initial skybox
         RenderSettings.skybox = skyboxes[currentTileIndex];
+        DynamicGI.UpdateEnvironment();
     }
 
     private void Update()
@@ -110,7 +121,15 @@ public class GameController : MonoBehaviour
             Debug.Log("Winter");
         }
 
-        powerupTimer -= Time.deltaTime;
+        if (powerupTimer > 0f)
+        {
+            powerupTimer -= Time.deltaTime;     // // Update cooldown timer
+
+        }
+        if (rareCollectableTimer > 0)
+        {
+            rareCollectableTimer -= Time.deltaTime;     // Update cooldown timer
+        }
     }
 
     /// Will spawn a tile at a certain location and setup the next position
@@ -223,8 +242,25 @@ public class GameController : MonoBehaviour
             // Store the collectible's position
             var collectiblePos = collectibleSpawnPoint.transform.position;
 
+            // Decide whether to spawn a regular or rare collectable
+            Transform collectableToSpawn;
+
+            if (rareCollectables.Length > 0 && UnityEngine.Random.value < rareCollectableChance && rareCollectableTimer <= 0)
+            {
+                // Spawn a rare collectable
+                collectableToSpawn = rareCollectables[currentTileIndex];
+
+                // Reset the cooldown timer after spawning a rare collectable
+                rareCollectableTimer = rareCollectableCD;
+            }
+            else
+            {
+                // Spawn a regular collectable
+                collectableToSpawn = collectiblePrefab;
+            }
+
             // Instantiate the collectible at the chosen position
-            var newCollectible = Instantiate(collectiblePrefab, collectiblePos, Quaternion.identity);
+            var newCollectible = Instantiate(collectableToSpawn, collectiblePos, Quaternion.identity);
 
             // Have it parented to the tile
             newCollectible.SetParent(collectibleSpawnPoint.transform);

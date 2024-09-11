@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3684140009533367885}
   - component: {fileID: 4361291809023921682}
   - component: {fileID: 4046933058421107050}
-  - component: {fileID: 2346232067561678242}
   m_Layer: 0
   m_Name: Wings2
   m_TagString: Untagged
@@ -84,27 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2346232067561678242
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2451262178665961262}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.27916807, y: 0.12389934, z: 0.000000010979219}
-  m_Center: {x: 0.021974728, y: -0.04904125, z: 0.00000011373138}
 --- !u!1 &7020845619304493555
 GameObject:
   m_ObjectHideFlags: 0
@@ -114,6 +92,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1920011240533125031}
+  - component: {fileID: 5261339969280724679}
+  - component: {fileID: 2961415786048635630}
   m_Layer: 0
   m_Name: Butterfly2
   m_TagString: Untagged
@@ -139,6 +119,41 @@ Transform:
   - {fileID: 3684140009533367885}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5261339969280724679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020845619304493555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cc2f2c98a83922449c7e86748e2f514, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Butterfly2
+  scoreValue: 300
+--- !u!65 &2961415786048635630
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7020845619304493555}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.56723857, y: 0.36998188, z: 0.045389008}
+  m_Center: {x: -0.010772984, y: 0.0021846096, z: 0.008855495}
 --- !u!1 &7611444036765416046
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,7 +165,6 @@ GameObject:
   - component: {fileID: 4340583735838903304}
   - component: {fileID: 8036274303053855474}
   - component: {fileID: 6140246228077521803}
-  - component: {fileID: 7632109266460805558}
   m_Layer: 0
   m_Name: Wings1.001
   m_TagString: Untagged
@@ -223,27 +237,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &7632109266460805558
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7611444036765416046}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.10725249, y: 0.03763097, z: 0.0000000034111525}
-  m_Center: {x: -0.0025857016, y: 0.016043322, z: 5.4781213e-10}
 --- !u!1 &7900110864003837783
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,8 +248,6 @@ GameObject:
   - component: {fileID: 6319296431066707217}
   - component: {fileID: 567985131921488203}
   - component: {fileID: 1992555547308733358}
-  - component: {fileID: 1216114358489238182}
-  - component: {fileID: 8385676508682369596}
   m_Layer: 0
   m_Name: Butterfly
   m_TagString: Untagged
@@ -329,38 +320,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1216114358489238182
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7900110864003837783}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.5709059, y: 0.03964849, z: 0.34300455}
-  m_Center: {x: -0.01684205, y: 0.000000014734307, z: -0.05027758}
---- !u!114 &8385676508682369596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7900110864003837783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cc2f2c98a83922449c7e86748e2f514, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: Butterfly2
-  scoreValue: 300

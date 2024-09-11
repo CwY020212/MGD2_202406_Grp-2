@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 65aa749fc42cbeb469e0740e61930ce0, type: 2}
+  - {fileID: 2100000, guid: cd33b8f9276e94240b5c938c7fa3a387, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -151,10 +151,11 @@ MonoBehaviour:
   speedBoostMultiplier: 2
   shieldDuration: 5
   magnetDuration: 5
+  hasShield: 0
   horizMovement: 1
   swipeMove: 3
   minSwipeDistance: 0.25
-  jumpForce: 10
+  jumpForce: 12
   jumpDistance: 3
   whatIsGround:
     serializedVersion: 2
@@ -163,3 +164,4 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   scoreText: {fileID: 0}
+  score: 0

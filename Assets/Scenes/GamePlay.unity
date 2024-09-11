@@ -899,7 +899,15 @@ MonoBehaviour:
   - obstacles:
     - {fileID: 7754669633669720243, guid: 4e191c4e9d64c634a84e02469c77e3b9, type: 3}
     - {fileID: 578735896986430917, guid: 1290dcf81a200074aa92a3942b1227e3, type: 3}
-  collectiblePrefab: {fileID: 4729567157529672892, guid: cc48f7038be77974585b21969d994a10, type: 3}
+  collectiblePrefab: {fileID: 4729567157529672892, guid: 1add27eadd5808b4283dbb4dded89742, type: 3}
+  rareCollectables:
+  - {fileID: 1920011240533125031, guid: ccc80f8610f314a45b5f2adc0a619557, type: 3}
+  - {fileID: 4729567157529672892, guid: cc48f7038be77974585b21969d994a10, type: 3}
+  - {fileID: 8006259518821887447, guid: 5b09a04e2ede35243ad4fa57cb030c9f, type: 3}
+  - {fileID: 6186416818098975904, guid: 414ae6febac310f408485f71a4235a9f, type: 3}
+  rareCollectableChance: 0.05
+  rareCollectableCD: 25
+  rareCollectableTimer: 0
   powerups:
   - {fileID: 8953539378491120653, guid: c786b7cb988ddd54da103a4221245899, type: 3}
   - {fileID: 974479830172021870, guid: 0675223c07b95f848bac68f8ecbea289, type: 3}
@@ -915,9 +923,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 9aa8ed67591432941bb76f12eb23ff91, type: 2}
   - {fileID: 2100000, guid: 2441c79940171dc43b33badf9fe97828, type: 2}
   - {fileID: 2100000, guid: 52fcefd712182d743a781fde12426775, type: 2}
-  summerDistance: 100
-  autumnDistance: 300
-  winterDistance: 500
+  summerDistance: 1000
+  autumnDistance: 2000
+  winterDistance: 3000
 --- !u!4 &1744140299
 Transform:
   m_ObjectHideFlags: 0
@@ -1318,10 +1326,6 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1697301063698301954, guid: 403548471608e60448d7a38fe28ddf8c, type: 3}
-      propertyPath: jumpForce
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1697301063698301954, guid: 403548471608e60448d7a38fe28ddf8c, type: 3}
       propertyPath: scoreText
       value: 
       objectReference: {fileID: 6264595774371164791}
@@ -1365,14 +1369,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4947183275674012410, guid: 403548471608e60448d7a38fe28ddf8c, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8252548425481460073, guid: 403548471608e60448d7a38fe28ddf8c, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: cd33b8f9276e94240b5c938c7fa3a387, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
