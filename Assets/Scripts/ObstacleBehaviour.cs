@@ -42,6 +42,9 @@ public class ObstacleBehaviour : MonoBehaviour
         //Bring up restart menu
         var go = GetGameOverMenu();
         go.SetActive(true);
+
+        plyrScore.scoreText.gameObject.SetActive(false);
+
         SavePlayerScore();
         highScore.DisplayHighScore();
     }
