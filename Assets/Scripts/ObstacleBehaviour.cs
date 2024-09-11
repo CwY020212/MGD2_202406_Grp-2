@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -11,7 +12,7 @@ public class ObstacleBehaviour : MonoBehaviour
 
     private PlayerBehavior plyrScore;
     UIHandler highScore;
-
+  
     private void Start()
     {
         plyrScore = FindAnyObjectByType<PlayerBehavior>();
@@ -42,7 +43,7 @@ public class ObstacleBehaviour : MonoBehaviour
         //Bring up restart menu
         var go = GetGameOverMenu();
         go.SetActive(true);
-
+        
         plyrScore.scoreText.gameObject.SetActive(false);
 
         SavePlayerScore();
@@ -53,6 +54,7 @@ public class ObstacleBehaviour : MonoBehaviour
     {
         var canvas = GameObject.Find("Canvas").transform;
         return canvas.Find("Game Over").gameObject;
+
     }
 
     public void SavePlayerScore()

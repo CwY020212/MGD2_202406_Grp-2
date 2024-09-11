@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuController : MonoBehaviour
 {
     [Header("UI References")]
     public TMP_Text leaderboardText; // For displaying the top 5 scores
     public GameObject leaderboardPanel; // The panel that shows the leaderboard
+    public GameObject SoundPanel; // The panel that shows the leaderboard
+    public Slider bgmSlider; // The slider for controlling the volume
+    public Slider sfxSlider; // Slider for controlling SFX volume
+
+    [Header("Audio")]
+    public AudioSource bgmAudioSource; // The AudioSource component for BGM
+    public AudioSource sfxAudioSource; // The AudioSource component for SFX
+    public AudioClip clickSound; // The sound to play on click
 
     private List<float> leaderboardScores = new List<float>();
 
@@ -18,6 +27,24 @@ public class MainMenuController : MonoBehaviour
         DisplayTopFiveScores();
 
         leaderboardPanel.SetActive(false);
+        SoundPanel.SetActive(false);
+
+        float savedBGMVolume = PlayerPrefs.GetFloat("BGMVolume", 1f);
+        float savedSFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1f);
+        SetBGMVolume(savedBGMVolume);
+        SetSFXVolume(savedSFXVolume);
+
+        // Set slider values and add listeners
+        if (bgmSlider != null)
+        {
+            bgmSlider.value = savedBGMVolume;
+            bgmSlider.onValueChanged.AddListener(SetBGMVolume);
+        }
+        if (sfxSlider != null)
+        {
+            sfxSlider.value = savedSFXVolume;
+            sfxSlider.onValueChanged.AddListener(SetSFXVolume);
+        }
     }
 
     /// <summary>
@@ -27,6 +54,7 @@ public class MainMenuController : MonoBehaviour
     /// to go to</param>
     public void LoadLevel(string levelName)
     {
+        PlayClickSound();
         SceneManager.LoadScene(levelName);
     }
 
@@ -55,6 +83,7 @@ public class MainMenuController : MonoBehaviour
     // Opens the leaderboard panel
     public void OpenLeaderboard()
     {
+        PlayClickSound();
         if (leaderboardPanel != null)
         {
             leaderboardPanel.SetActive(true);
@@ -64,6 +93,7 @@ public class MainMenuController : MonoBehaviour
     // Closes the leaderboard panel
     public void CloseLeaderboard()
     {
+        PlayClickSound();
         if (leaderboardPanel != null)
         {
             leaderboardPanel.SetActive(false);
@@ -72,6 +102,51 @@ public class MainMenuController : MonoBehaviour
 
     public void CloseGame()
     {
+        PlayClickSound();
         Application.Quit();
     }
+
+    private void PlayClickSound()
+    {
+        if (sfxAudioSource != null && clickSound != null)
+        {
+            sfxAudioSource.PlayOneShot(clickSound);
+        }
+    }
+
+    public void LoadSoundPanel()
+    {
+        PlayClickSound();
+        SoundPanel.SetActive(true);
+    }
+
+    public void CloseSoundPanel()
+    {
+        PlayClickSound();
+        if (SoundPanel != null)
+        {
+            SoundPanel.SetActive(false);
+        }
+    }
+
+    public void SetBGMVolume(float volume)
+    {
+        if (bgmAudioSource != null)
+        {
+            bgmAudioSource.volume = volume;
+            PlayerPrefs.SetFloat("BGMVolume", volume);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public void SetSFXVolume(float volume)
+    {
+        if (sfxAudioSource != null)
+        {
+            sfxAudioSource.volume = volume;
+            PlayerPrefs.SetFloat("SFXVolume", volume);
+            PlayerPrefs.Save();
+        }
+    }
 }
+

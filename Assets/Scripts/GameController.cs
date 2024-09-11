@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 [Serializable]
 public class ObstacleGroup
@@ -21,7 +22,10 @@ public class GameController : MonoBehaviour
 
     [Tooltip("A reference to the obstacle we want to spawn")]
     public ObstacleGroup[] obstacleGroups;
-
+    public AudioSource summerBGM;
+    public AudioSource DefaultBGM;
+    public AudioSource AutumnBGM;
+    public AudioSource WinterBGM;
     [Tooltip("Reference to point collectable")]
     public Transform collectiblePrefab;
 
@@ -78,6 +82,12 @@ public class GameController : MonoBehaviour
     
     private void Start()
     {
+        // Apply saved preferences to your background music sources
+        summerBGM.volume = AudioPreferences.GetBGMVolume();
+        DefaultBGM.volume = AudioPreferences.GetBGMVolume();
+        AutumnBGM.volume = AudioPreferences.GetBGMVolume();
+        WinterBGM.volume = AudioPreferences.GetBGMVolume();
+
         score = FindObjectOfType<PlayerBehavior>();
         currentTile = tile[currentTileIndex];
 
@@ -98,6 +108,8 @@ public class GameController : MonoBehaviour
         // Set the initial skybox
         RenderSettings.skybox = skyboxes[currentTileIndex];
         DynamicGI.UpdateEnvironment();
+
+
     }
 
     private void Update()
@@ -150,36 +162,71 @@ public class GameController : MonoBehaviour
 
     private void SwitchTile(int tileIndex)
     {
+        AudioSource currentBGM = null;
+        AudioSource nextBGM = null;
+
         switch (tileIndex)
         {
             case 1:
+                currentBGM = GetCurrentBGM();  // Get the current BGM
+                nextBGM = summerBGM;
                 currentTileIndex = tileIndex;
                 currentTile = tile[currentTileIndex];
-                RenderSettings.skybox = skyboxes[currentTileIndex];     // Switch skybox when the tile 
-                DynamicGI.UpdateEnvironment();  // Update the lighting environment to reflect the new skybox
+                RenderSettings.skybox = skyboxes[currentTileIndex];
+                DynamicGI.UpdateEnvironment();
                 break;
             case 2:
+                currentBGM = GetCurrentBGM();
+                nextBGM = AutumnBGM;
                 currentTileIndex = tileIndex;
                 currentTile = tile[currentTileIndex];
-                RenderSettings.skybox = skyboxes[currentTileIndex];     // Switch skybox when the tile 
-                DynamicGI.UpdateEnvironment();  // Update the lighting environment to reflect the new skybox
+                RenderSettings.skybox = skyboxes[currentTileIndex];
+                DynamicGI.UpdateEnvironment();
                 break;
             case 3:
+                currentBGM = GetCurrentBGM();
+                nextBGM = WinterBGM;
                 currentTileIndex = tileIndex;
                 currentTile = tile[currentTileIndex];
-                RenderSettings.skybox = skyboxes[currentTileIndex];     // Switch skybox when the tile 
-                DynamicGI.UpdateEnvironment();  // Update the lighting environment to reflect the new skybox
+                RenderSettings.skybox = skyboxes[currentTileIndex];
+                DynamicGI.UpdateEnvironment();
                 break;
             default:
+                currentBGM = GetCurrentBGM();
+                nextBGM = DefaultBGM;
                 currentTileIndex = 0;
                 currentTile = tile[currentTileIndex];
-                RenderSettings.skybox = skyboxes[currentTileIndex];     // Switch skybox when the tile 
-                DynamicGI.UpdateEnvironment();  // Update the lighting environment to reflect the new skybox
+                RenderSettings.skybox = skyboxes[currentTileIndex];
+                DynamicGI.UpdateEnvironment();
                 break;
         }
-    }
 
-    private void SpawnObstacle(Transform newTile)
+        // Stop all other BGMs
+        StopAllBGMsExcept(nextBGM);
+
+        if (currentBGM != nextBGM)
+        {
+            StartCoroutine(FadeOutIn(currentBGM, nextBGM));
+        }
+    }
+        private AudioSource GetCurrentBGM()
+        {
+            // Return the currently playing BGM (you may need to adjust this method based on your setup)
+            if (summerBGM.isPlaying) return summerBGM;
+            if (AutumnBGM.isPlaying) return AutumnBGM;
+            if (WinterBGM.isPlaying) return WinterBGM;
+            return DefaultBGM;  // Default BGM if no other BGM is playing
+        }
+
+        private void StopAllBGMsExcept(AudioSource exceptBGM)
+        {
+            if (exceptBGM != summerBGM) summerBGM.Stop();
+            if (exceptBGM != AutumnBGM) AutumnBGM.Stop();
+            if (exceptBGM != WinterBGM) WinterBGM.Stop();
+            if (exceptBGM != DefaultBGM) DefaultBGM.Stop();
+        }
+
+        private void SpawnObstacle(Transform newTile)
     {
         // Now we need to get all of the possible places to spawn the
         // obstacle
@@ -285,6 +332,36 @@ public class GameController : MonoBehaviour
             newPowerup.SetParent(spawnPoint.transform);
 
             powerupTimer = powerupCD;
+        }
+    }
+
+    private IEnumerator FadeOutIn(AudioSource from, AudioSource to, float fadeDuration = 1f)
+    {
+        // Fade out the current BGM
+        float currentTime = 0;
+        float startVolume = from.volume;
+
+        while (currentTime < fadeDuration)
+        {
+            currentTime += Time.deltaTime;
+            from.volume = Mathf.Lerp(startVolume, 0, currentTime / fadeDuration);
+            yield return null;
+        }
+
+        from.Stop();  // Ensure it stops completely
+        from.volume = startVolume; // Reset volume for potential future use
+
+        // Start the new BGM
+        to.volume = 0; // Start with the volume at 0
+        to.Play();
+
+        // Fade in the new BGM
+        currentTime = 0;
+        while (currentTime < fadeDuration)
+        {
+            currentTime += Time.deltaTime;
+            to.volume = Mathf.Lerp(0, startVolume, currentTime / fadeDuration);
+            yield return null;
         }
     }
 }

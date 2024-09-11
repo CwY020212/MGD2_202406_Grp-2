@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PauseSceneController : MainMenuController
@@ -8,7 +9,8 @@ public class PauseSceneController : MainMenuController
     public static bool paused;
     [Tooltip("Reference to the pause menu object to turn on/off")]
     public GameObject pauseMenu;
-
+    public AudioSource ClickUISFX; // The sound to play on click
+    private bool isInitializing = true;
     /// <summary>
     /// Reloads our current level, effectively "restarting" the
     /// game
@@ -16,6 +18,7 @@ public class PauseSceneController : MainMenuController
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        ClickUISFX.Play();
     }
     /// <summary>
     /// Will turn our pause menu on or off
@@ -27,12 +30,21 @@ public class PauseSceneController : MainMenuController
         // If the game is paused, timeScale is 0, otherwise 1
         Time.timeScale = (paused) ? 0 : 1;
         pauseMenu.SetActive(paused);
+
+        // Only play the click sound if not initializing
+        if (!isInitializing)
+        {
+            ClickUISFX.Play();
+        }
     }
     void Start()
     {
         // Must be reset in Start or else game will be paused upon
         // restart
         SetPauseMenu(false);
+        isInitializing = false; // Set to false after initial setup
+        ClickUISFX.volume = AudioPreferences.GetSFXVolume();
+        // If you have other AudioSources in this controller, apply their volumes too
     }
 
     #region Share Score via Twitter
