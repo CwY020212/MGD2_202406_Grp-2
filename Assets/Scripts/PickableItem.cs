@@ -19,6 +19,7 @@ public class PickableItem : MonoBehaviour
 
             if (playerBehavior != null)
             {
+                playerBehavior.PlaySFX(playerBehavior.pickUpSFX);
                 // Update the player's score
                 playerBehavior.Score += scoreValue;
 

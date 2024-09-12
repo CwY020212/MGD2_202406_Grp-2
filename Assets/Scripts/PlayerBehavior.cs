@@ -2,12 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBehavior : MonoBehaviour
 {
     private Rigidbody rb;
 
     private float radius = 0.5f;
+
+    private AudioSource audioSource;
+
+    [Header("Sound Effects")]
+    public AudioClip jumpSFX;
+    public AudioClip pickUpSFX;
+    public AudioClip speedBoostSFX;
+    public AudioClip shieldSFX;
+    public AudioClip magnetSFX;
+
+    private float sfxVolume;
 
     [Header("Movement")]
     [Tooltip("How fast the ball moves left/right")]
@@ -100,6 +112,18 @@ public class PlayerBehavior : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
+        audioSource = GetComponent<AudioSource>();
+
+        if (audioSource == null)
+        {
+            Debug.LogError("Missing AudioSource component on Player.");
+        }
+
+        sfxVolume = AudioPreferences.GetSFXVolume();
+
+        // Update the SFX volume of the audio source
+        audioSource.volume = sfxVolume;
+
         col = GetComponent<SphereCollider>();
 
         minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
@@ -109,6 +133,9 @@ public class PlayerBehavior : MonoBehaviour
 
     private void Update()
     {
+        sfxVolume = AudioPreferences.GetSFXVolume();
+        audioSource.volume = sfxVolume;
+
         // Check Properties
         // Check if the player is on the ground.
         isGrounded = Physics.CheckSphere(transform.position, col.radius + 0.05f, whatIsGround);
@@ -227,6 +254,8 @@ public class PlayerBehavior : MonoBehaviour
             {
                 // Apply the jump force
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                // Play jump sound effect
+                PlaySFX(jumpSFX);
             }
         }
     }
@@ -240,10 +269,12 @@ public class PlayerBehavior : MonoBehaviour
             HitPosition.y = hitCollider.transform.position.y;
 
             Vector3 Direction = HitPosition - transform.position;
-            if (Vector3.Dot(transform.forward, Direction.normalized) > 0.5f)
+            if (Vector3.Dot(transform.forward, Direction.normalized) > 3f)
             {
                 PowerUpType powerUp = hitCollider.GetComponent<PowerUp>().type;
                 ApplyPowerUp(powerUp);
+                // Play pick up sound effect
+                PlaySFX(pickUpSFX);
                 hitCollider.SendMessage("Operate", SendMessageOptions.DontRequireReceiver);
             }
         }
@@ -269,6 +300,9 @@ public class PlayerBehavior : MonoBehaviour
     {
         hasSpeedBoost = true;
         speedBoostEndTime = Time.time + 5f; // Duration of the speed boost
+
+        // Play speed boost sound effect
+        PlaySFX(speedBoostSFX);
     }
 
     private void ActivateShieldBoost()
@@ -281,6 +315,9 @@ public class PlayerBehavior : MonoBehaviour
     {
         hasMagnet = true;
         magnetEndTime = Time.time + magnetDuration;
+
+        // Play magnet sound effect
+        PlaySFX(magnetSFX);
     }
 
     private void CheckPowerUps()
@@ -329,6 +366,12 @@ public class PlayerBehavior : MonoBehaviour
             collectible.transform.position += direction * Time.deltaTime * 7f; // Adjust speed as needed
         }
     }
+    public void PlaySFX(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            audioSource.PlayOneShot(clip, sfxVolume);
+        }
+    }
 
-   
 }
