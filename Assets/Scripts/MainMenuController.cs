@@ -13,6 +13,7 @@ public class MainMenuController : MonoBehaviour
     public GameObject SoundPanel; // The panel that shows the leaderboard
     public Slider bgmSlider; // The slider for controlling the volume
     public Slider sfxSlider; // Slider for controlling SFX volume
+    public GameObject MainPanel;
 
     [Header("Audio")]
     public AudioSource bgmAudioSource; // The AudioSource component for BGM
@@ -87,6 +88,7 @@ public class MainMenuController : MonoBehaviour
         if (leaderboardPanel != null)
         {
             leaderboardPanel.SetActive(true);
+            MainPanel.SetActive(false);
         }
     }
 
@@ -97,6 +99,7 @@ public class MainMenuController : MonoBehaviour
         if (leaderboardPanel != null)
         {
             leaderboardPanel.SetActive(false);
+            MainPanel.SetActive(true);
         }
     }
 
@@ -118,6 +121,7 @@ public class MainMenuController : MonoBehaviour
     {
         PlayClickSound();
         SoundPanel.SetActive(true);
+        MainPanel.SetActive(false);
     }
 
     public void CloseSoundPanel()
@@ -126,6 +130,7 @@ public class MainMenuController : MonoBehaviour
         if (SoundPanel != null)
         {
             SoundPanel.SetActive(false);
+            MainPanel.SetActive(true);
         }
     }
 
