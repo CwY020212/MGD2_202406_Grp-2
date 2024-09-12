@@ -10,6 +10,10 @@ public class PlayerBehavior : MonoBehaviour
 
     private float radius = 0.5f;
 
+    // Action tracking
+    private bool hasJumped = false;
+    private bool hasSwiped = false;
+
     private AudioSource audioSource;
 
     [Header("Sound Effects")]
@@ -90,7 +94,8 @@ public class PlayerBehavior : MonoBehaviour
     // Boolean that check whether there is an obstacle in front of the player.
     private bool hasObstacle;
 
-    [Header("Object References")]
+    [Header("UI References")]
+    public TMP_Text instructionsText; // The instructions UI text
     public TMP_Text scoreText; // Changed to TMP_Text
     public float score = 0f;
 
@@ -129,6 +134,11 @@ public class PlayerBehavior : MonoBehaviour
         minSwipeDistancePixels = minSwipeDistance * Screen.dpi;
 
         Score = 0;
+        // Display instructions at the start
+        if (instructionsText != null)
+        {
+            instructionsText.text = "Collect as many points as you can!\nTap the bottom of the screen to jump.\nSwipe left or right to move sideways.";
+        }
     }
 
     private void Update()
@@ -165,6 +175,11 @@ public class PlayerBehavior : MonoBehaviour
         {
             AttractCollectibles();
         }
+
+        if (instructionsText.gameObject.activeSelf)
+        {
+            StartCoroutine(FadeOutText(5f)); // Fade out over 5 seconds
+        }
     }
 
     private void FixedUpdate()
@@ -187,8 +202,11 @@ public class PlayerBehavior : MonoBehaviour
         }
 
         rb.AddForce(horizontalSpeed, 0, 0);
+        if ( instructionsText.gameObject.activeSelf)
+        {
+            StartCoroutine(FadeOutText(5f)); // Fade out over 5 seconds
+        }
 
-       
     }
 
    
@@ -373,5 +391,20 @@ public class PlayerBehavior : MonoBehaviour
             audioSource.PlayOneShot(clip, sfxVolume);
         }
     }
+    private IEnumerator FadeOutText(float fadeDuration)
+    {
+        float elapsedTime = 0f;
+        Color originalColor = instructionsText.color;
 
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+            instructionsText.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            yield return null;
+        }
+
+        // After fading out, deactivate the text
+        instructionsText.gameObject.SetActive(false);
+    }
 }
