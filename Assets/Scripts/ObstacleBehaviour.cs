@@ -50,7 +50,7 @@ public class ObstacleBehaviour : MonoBehaviour
         highScore.DisplayHighScore();
     }
 
-    GameObject GetGameOverMenu()
+     public GameObject GetGameOverMenu()
     {
         var canvas = GameObject.Find("Canvas").transform;
         return canvas.Find("Game Over").gameObject;
